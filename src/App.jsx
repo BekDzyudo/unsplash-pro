@@ -4,6 +4,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Home, About, Contact, LikedImages } from "./pages";
 // layouts
 import MainLayout from "./layout/MainLayout";
+// actions
+import { action as homeAction } from "./pages/Home";
 
 function App() {
   const routes = createBrowserRouter([
@@ -14,6 +16,7 @@ function App() {
         {
           index: true,
           element: <Home />,
+          action: homeAction,
         },
         {
           path: "/about",
