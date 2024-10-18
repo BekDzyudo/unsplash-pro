@@ -1,5 +1,5 @@
 // components
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ImageContainer, Search } from "../components";
 // react router dom
 import { useActionData } from "react-router-dom";
@@ -12,24 +12,37 @@ export const action = async ({ request }) => {
 };
 
 function Home() {
+  // search value
+  const searchValue = useActionData();
   const [allImages, setAllImages] = useState([]);
+  const [pageParam, setPageParam] = useState(1);
+  const prevSearchParam = useRef(searchValue);
+
   // fetch images
   const { data, isPending, error } = useFetch(
     `https://api.unsplash.com/search/photos?client_id=${
       import.meta.env.VITE_ACCESS_KEY
-    }&query=all&page=1`
+    }&query=${searchValue ?? "all"}&page=${pageParam}`
   );
   useEffect(() => {
     if (data && data.results) {
-      setAllImages(data.results);
+      setAllImages((prevImages) => {
+        return pageParam == 1 ? data.results : [...prevImages, ...data.results];
+      });
     }
   }, [data]);
 
-  // search value
-  const searchValue = useActionData();
+  useEffect(() => {
+    if (searchValue != prevSearchParam.current) {
+      setAllImages([]);
+      setPageParam(1);
+      prevSearchParam.current = searchValue;
+    }
+  }, [searchValue]);
+
   useEffect(() => {
     if (searchValue) {
-      console.log(searchValue);
+      // console.log(searchValue);
     }
   }, [searchValue]);
 
@@ -44,9 +57,14 @@ function Home() {
       <div>
         {allImages.length > 0 && <ImageContainer images={allImages} />}
         <div>
-          <button className="btn btn-secondary my-10 btn-block text-xl">
-            Read more
-          </button>
+          {!isPending && (
+            <button
+              onClick={() => setPageParam(pageParam + 1)}
+              className="btn btn-secondary my-10 btn-block text-xl"
+            >
+              Read more
+            </button>
+          )}
         </div>
       </div>
     </div>

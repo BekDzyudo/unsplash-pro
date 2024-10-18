@@ -1,5 +1,6 @@
 import React from "react";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
+import { Image } from "./";
 
 function ImageContainer({ images }) {
   return (
@@ -8,7 +9,7 @@ function ImageContainer({ images }) {
     >
       <Masonry gutter="10px">
         {images.map((image) => {
-          return <img key={image.id} src={image.urls.regular} alt="" />;
+          return <Image key={image.id} image={image} />;
         })}
       </Masonry>
     </ResponsiveMasonry>
