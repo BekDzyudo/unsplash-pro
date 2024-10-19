@@ -57,6 +57,7 @@ function ImageInfo() {
                 <strong className="text-lg">Portfolio:</strong>
                 <br />
                 <Link
+                  target="_blank"
                   to={data.user.portfolio_url}
                   className="text-blue-600 underline text-md md:text-xl"
                 >
