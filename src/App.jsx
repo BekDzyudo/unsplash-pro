@@ -6,6 +6,8 @@ import { Home, About, Contact, LikedImages } from "./pages";
 import MainLayout from "./layout/MainLayout";
 // actions
 import { action as homeAction } from "./pages/Home";
+import DownloadImages from "./pages/DownloadImages";
+import ImageInfo from "./pages/ImageInfo";
 
 function App() {
   const routes = createBrowserRouter([
@@ -29,6 +31,14 @@ function App() {
         {
           path: "/likedimages",
           element: <LikedImages />,
+        },
+        {
+          path: "/downloadimages",
+          element: <DownloadImages />,
+        },
+        {
+          path: "/ImageInfo/:id",
+          element: <ImageInfo />,
         },
       ],
     },

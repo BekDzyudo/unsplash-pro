@@ -1,17 +1,50 @@
 // react icons
 import { FaHeart, FaRegHeart, FaDownload } from "react-icons/fa";
+// hooks
+import { useGlobalContext } from "../hooks/useGlobalContext";
+import { Link } from "react-router-dom";
 
-function Image({ image }) {
+function Image({ image, added }) {
   const { urls, alt_description, links, user } = image;
+  const { likedImages, downloadImages, dispatch } = useGlobalContext();
+
+  function addLikeImage(e, image) {
+    e.preventDefault();
+    const alreadyLikeImage = likedImages.some((img) => img.id == image.id);
+    if (!alreadyLikeImage) {
+      dispatch({ type: "LIKE", payload: image });
+    } else {
+      dispatch({ type: "UNLIKE", payload: image.id });
+    }
+  }
+
+  function addedDownload(e, image) {
+    e.preventDefault();
+    const alreadyDownloadImage = downloadImages.some(
+      (img) => img.id == image.id
+    );
+
+    if (!alreadyDownloadImage) {
+      dispatch({ type: "DOWNLOAD", payload: image });
+    }
+    window.open(links.download + "&force=true", "_blank");
+  }
+
   return (
-    <div className="relative group">
-      {true && (
-        <span className="like-btn-style hover-icons">
+    <Link to={`/ImageInfo/${image.id}`} className="relative group">
+      {!added && (
+        <span
+          onClick={(e) => addLikeImage(e, image)}
+          className="like-btn-style hover-icons"
+        >
           <FaRegHeart className="text-white text-lg" />
         </span>
       )}
-      {false && (
-        <span className="like-btn-style bg-slate-300 hover-icons">
+      {added && (
+        <span
+          onClick={(e) => addLikeImage(e, image)}
+          className="like-btn-style bg-slate-300 hover-icons"
+        >
           <FaHeart className="text-red-600 text-lg" />
         </span>
       )}
@@ -25,11 +58,11 @@ function Image({ image }) {
         <p className="text-white">{user.name}</p>
       </span>
       <span className="absolute bottom-3 right-3 hover-icons">
-        <a href={links.download + "&force=true"}>
+        <span onClick={(e) => addedDownload(e, image)}>
           <FaDownload className="text-lg text-white" />
-        </a>
+        </span>
       </span>
-    </div>
+    </Link>
   );
 }
 

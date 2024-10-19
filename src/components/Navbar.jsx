@@ -1,6 +1,6 @@
 // react-icons
 import { FcStackOfPhotos } from "react-icons/fc";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart, FaDownload } from "react-icons/fa";
 import { FaSun } from "react-icons/fa";
 import { FaMoon } from "react-icons/fa";
 // components
@@ -8,6 +8,8 @@ import { NavLinks } from "./";
 // rrd
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+// context
+import { useGlobalContext } from "../hooks/useGlobalContext";
 
 const themeFromLocalStorage = () => {
   return localStorage.getItem("theme") || "winter";
@@ -15,6 +17,7 @@ const themeFromLocalStorage = () => {
 
 function Navbar() {
   const [theme, setTheme] = useState(themeFromLocalStorage());
+  const { likedImages, downloadImages } = useGlobalContext();
 
   function changeTheme() {
     const newTheme = theme == "winter" ? "dracula" : "winter";
@@ -51,8 +54,16 @@ function Navbar() {
         </div>
         <div className="navbar-end gap-3">
           <Link to="/likedimages" className="indicator">
-            <span className="indicator-item badge badge-primary">0</span>
+            <span className="indicator-item badge badge-primary">
+              {likedImages.length}
+            </span>
             <FaHeart className="w-6 h-6 m-1" />
+          </Link>
+          <Link to="/downloadimages" className="indicator">
+            <span className="indicator-item badge badge-primary">
+              {downloadImages.length}
+            </span>
+            <FaDownload className="w-6 h-6 m-1" />
           </Link>
           <label className="swap swap-rotate">
             <input type="checkbox" onClick={changeTheme} />
