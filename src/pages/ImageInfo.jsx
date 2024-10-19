@@ -17,8 +17,8 @@ function ImageInfo() {
         <span className="loading loading-spinner loading-lg fixed top-1/2 left-1/2"></span>
       )}
       {data && (
-        <div className="my-5 flex justify-center">
-          <div className="flex flex-col md:flex-row gap-12 p-5 shadow-lg">
+        <div className="my-5 flex justify-center align-elements">
+          <div className="flex flex-col md:flex-row gap-12 p-5 w-full">
             <div className="flex flex-col items-center gap-5">
               <div className="w-full h-[300px] md:w-[400px] md:h-[300px]">
                 <img
@@ -60,7 +60,7 @@ function ImageInfo() {
                   to={data.user.portfolio_url}
                   className="text-blue-600 underline text-md md:text-xl"
                 >
-                  Portfolio URL
+                  {data.user.portfolio_url && <span>Portfolio URL</span>}
                 </Link>
               </div>
             </div>

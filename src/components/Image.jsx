@@ -3,6 +3,7 @@ import { FaHeart, FaRegHeart, FaDownload } from "react-icons/fa";
 // hooks
 import { useGlobalContext } from "../hooks/useGlobalContext";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Image({ image, added }) {
   const { urls, alt_description, links, user } = image;
