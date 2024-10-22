@@ -1,6 +1,7 @@
 import React from "react";
 import { useGlobalContext } from "../hooks/useGlobalContext";
 import { ImageContainer } from "../components";
+import { Link } from "react-router-dom";
 
 function DownloadImages() {
   const { downloadImages } = useGlobalContext();

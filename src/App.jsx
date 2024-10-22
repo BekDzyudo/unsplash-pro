@@ -1,19 +1,29 @@
 // rrd
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 // pages
-import { Home, About, Contact, LikedImages } from "./pages";
+import { Home, About, Contact, LikedImages, Login, Register } from "./pages";
 // layouts
 import MainLayout from "./layout/MainLayout";
 // actions
 import { action as homeAction } from "./pages/Home";
 import DownloadImages from "./pages/DownloadImages";
 import ImageInfo from "./pages/ImageInfo";
+import { ProtectedRoutes } from "./components";
 
 function App() {
+  const user = true;
   const routes = createBrowserRouter([
     {
       path: "/",
-      element: <MainLayout />,
+      element: (
+        <ProtectedRoutes user={user}>
+          <MainLayout />
+        </ProtectedRoutes>
+      ),
       children: [
         {
           index: true,
@@ -41,6 +51,14 @@ function App() {
           element: <ImageInfo />,
         },
       ],
+    },
+    {
+      path: "/login",
+      element: user ? <Navigate to="/" /> : <Login />,
+    },
+    {
+      path: "/register",
+      element: user ? <Navigate to="/" /> : <Register />,
     },
   ]);
 
