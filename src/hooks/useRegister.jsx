@@ -39,7 +39,7 @@ export const useRegister = () => {
       })
       .catch((error) => {
         const errorMessage = error.message;
-        toast.error(errorMessage);
+        toast.error("Already registered with this email");
       });
   };
 
