@@ -1,4 +1,5 @@
 import { createContext, useEffect, useReducer } from "react";
+import { useCollection } from "../hooks/useCollection";
 
 export const GlobalContext = createContext();
 
@@ -22,7 +23,7 @@ const changeState = (state, action) => {
     case "AUTH_READY":
       return { ...state, authReady: true };
     case "LIKE":
-      return { ...state, likedImages: [...state.likedImages, payload] };
+      return { ...state, likedImages: payload };
     case "UNLIKE":
       return {
         ...state,
@@ -31,7 +32,7 @@ const changeState = (state, action) => {
     case "DOWNLOAD":
       return {
         ...state,
-        downloadImages: [...state.downloadImages, payload],
+        downloadImages: payload,
       };
     case "UNDOWNLOAD":
       return {
@@ -53,9 +54,28 @@ export const GlobalContextProvider = ({ children }) => {
     downloadImages: [],
   });
 
+  const { data: likedImages } = useCollection("likedImages", [
+    "uid",
+    "==",
+    state.user && state.user.uid,
+  ]);
+  const { data: downloadImages } = useCollection("downloadImages", [
+    "uid",
+    "==",
+    state.user && state.user.uid,
+  ]);
+
   useEffect(() => {
     localStorage.setItem("my-splash-data", JSON.stringify(state));
   }, [state]);
+
+  useEffect(() => {
+    if (likedImages) dispatch({ type: "LIKE", payload: likedImages });
+  }, [likedImages]);
+
+  useEffect(() => {
+    if (downloadImages) dispatch({ type: "DOWNLOAD", payload: downloadImages });
+  }, [downloadImages]);
 
   return (
     <GlobalContext.Provider value={{ ...state, dispatch }}>

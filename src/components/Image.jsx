@@ -5,34 +5,57 @@ import { RiDeleteBin6Fill } from "react-icons/ri";
 import { useGlobalContext } from "../hooks/useGlobalContext";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useFirestore } from "../hooks/useFirestore";
+import { useFirestoreDownload } from "../hooks/useFirestoreDownload";
 
 function Image({ image, addedLike, addedDownload }) {
   const { urls, alt_description, links, user } = image;
-  const { likedImages, downloadImages, dispatch } = useGlobalContext();
+  const {
+    likedImages,
+    downloadImages,
+    dispatch,
+    user: authUser,
+  } = useGlobalContext();
+  const { addDocument, removeDocument } = useFirestore();
+  const { addDocumentDLoad, removeDocumentDLoad } = useFirestoreDownload();
 
   function addLikeImage(e, image) {
     e.preventDefault();
-    const alreadyLikeImage = likedImages.some((img) => img.id == image.id);
+    const alreadyLikeImage = likedImages.find((img) => img.id == image.id);
     if (!alreadyLikeImage) {
-      dispatch({ type: "LIKE", payload: image });
+      addDocument("likedImages", { ...image, uid: authUser.uid });
     } else {
-      dispatch({ type: "UNLIKE", payload: image.id });
+      removeDocument("likedImages", alreadyLikeImage._id);
     }
   }
 
   function addedDownloadImage(e, image) {
     e.preventDefault();
-    const alreadyDownloadImage = downloadImages.some(
+    const alreadyDownloadImage = downloadImages.find(
       (img) => img.id == image.id
     );
 
     if (!alreadyDownloadImage) {
-      dispatch({ type: "DOWNLOAD", payload: image });
+      addDocumentDLoad("downloadImages", { ...image, uid: authUser.uid });
       window.open(links.download + "&force=true", "_blank");
     } else {
-      dispatch({ type: "UNDOWNLOAD", payload: image.id });
+      removeDocumentDLoad("downloadImages", alreadyDownloadImage._id);
     }
   }
+
+  // function addedDownloadImage(e, image) {
+  //   e.preventDefault();
+  //   const alreadyDownloadImage = downloadImages.some(
+  //     (img) => img.id == image.id
+  //   );
+
+  //   if (!alreadyDownloadImage) {
+  //     dispatch({ type: "DOWNLOAD", payload: image });
+  //     window.open(links.download + "&force=true", "_blank");
+  //   } else {
+  //     dispatch({ type: "UNDOWNLOAD", payload: image.id });
+  //   }
+  // }
 
   return (
     <Link to={`/ImageInfo/${image.id}`} className="relative group">
