@@ -21,6 +21,9 @@ function Image({ image, addedLike, addedDownload }) {
 
   function addLikeImage(e, image) {
     e.preventDefault();
+    if (!authUser.emailVerified) {
+      return toast.info("Please, verify your email");
+    }
     const alreadyLikeImage = likedImages.find((img) => img.id == image.id);
     if (!alreadyLikeImage) {
       addDocument("likedImages", { ...image, uid: authUser.uid });
@@ -31,6 +34,9 @@ function Image({ image, addedLike, addedDownload }) {
 
   function addedDownloadImage(e, image) {
     e.preventDefault();
+    if (!authUser.emailVerified) {
+      return toast.info("Please, verify your email");
+    }
     const alreadyDownloadImage = downloadImages.find(
       (img) => img.id == image.id
     );

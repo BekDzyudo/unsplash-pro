@@ -6,7 +6,15 @@ import {
 } from "react-router-dom";
 import { useEffect } from "react";
 // pages
-import { Home, About, Contact, LikedImages, Login, Register } from "./pages";
+import {
+  Home,
+  About,
+  Contact,
+  LikedImages,
+  Login,
+  Register,
+  Profile,
+} from "./pages";
 // layouts
 import MainLayout from "./layout/MainLayout";
 // actions
@@ -60,6 +68,10 @@ function App() {
         {
           path: "/ImageInfo/:id",
           element: <ImageInfo />,
+        },
+        {
+          path: "/profile",
+          element: <Profile />,
         },
       ],
     },

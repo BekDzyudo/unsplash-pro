@@ -31,7 +31,7 @@ function NavLinks() {
   return (
     <>
       <li className="md:hidden">
-        <Link to="/">Profile</Link>
+        <Link to="/profile">Profile</Link>
       </li>
       <li>
         <Link to="/">Home</Link>
