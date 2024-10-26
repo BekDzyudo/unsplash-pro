@@ -3,16 +3,6 @@ import { useCollection } from "../hooks/useCollection";
 
 export const GlobalContext = createContext();
 
-// function getFromLocalStorage() {
-//   return (
-//     JSON.parse(localStorage.getItem("my-splash-data")) || {
-//       user: null,
-//       likedImages: [],
-//       downloadImages: [],
-//     }
-//   );
-// }
-
 const changeState = (state, action) => {
   const { type, payload } = action;
   switch (type) {

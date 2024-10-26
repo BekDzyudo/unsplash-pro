@@ -22,7 +22,7 @@ function Image({ image, addedLike, addedDownload }) {
   function addLikeImage(e, image) {
     e.preventDefault();
     if (!authUser.emailVerified) {
-      return toast.info("Please, verify your email");
+      return toast.info("Please, verify your email. Go to profile page");
     }
     const alreadyLikeImage = likedImages.find((img) => img.id == image.id);
     if (!alreadyLikeImage) {
@@ -35,7 +35,7 @@ function Image({ image, addedLike, addedDownload }) {
   function addedDownloadImage(e, image) {
     e.preventDefault();
     if (!authUser.emailVerified) {
-      return toast.info("Please, verify your email");
+      return toast.info("Please, verify your email. Go to profile page");
     }
     const alreadyDownloadImage = downloadImages.find(
       (img) => img.id == image.id
